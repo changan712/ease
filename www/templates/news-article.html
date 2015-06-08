@@ -1,0 +1,28 @@
+<ion-view view-title="新闻内页">
+    <ion-nav-buttons side="right">
+        <button class="button" ng-click="showComment()">
+            {{news.commented}} 条评论
+        </button>
+    </ion-nav-buttons>
+    <ion-content class="padding">
+
+        <div class="article">
+            <h1 class="article-title"><ion-scroll scrollbar-y="false" scrollbar-x="false" direction="x" >{{news.title}}</ion-scroll></h1>
+            <div class="article-con" ng-bind-html="rendHtml(news.description)"></div>
+            <div class="keywords" ng-if="news.keywords.length">关键字:
+                <a href="#" ng-repeat="key in news.keywords">{{key}}</a>
+            </div>
+            <div class="foot-time ">
+                {{news.time|date:'yyyy-MM-dd '}}
+            </div>
+            <div class="comment">
+                <h5>精彩评论</h5>
+                <div class="line"></div>
+                <ul class="comment-list mt10">
+                    <li></li>
+                </ul>
+            </div>
+
+        </div>
+    </ion-content>
+</ion-view>

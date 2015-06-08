@@ -1,0 +1,10 @@
+<ion-view view-title="新闻">
+    <ion-content >
+        <ion-list>
+            <a class="item" ng-repeat="list in newslist" href="#/app/news/{{list.id}}">{{list.title}}</a>
+        </ion-list>
+        <ion-infinite-scroll immediate-check="true"  spinner="spiral" ng-if="!noMoreItemsAvailable"  on-infinite="loadMore()" distance="1%">
+
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,19 @@
+<form name="sigForm">
+    <ion-view view-title="修改签名">
+
+        <ion-nav-buttons side="right">
+            <button class="button " ng-disabled="!sigForm.sig.$dirty||vm.remainLength<0" ng-click="updateSig()">
+                完成
+            </button>
+        </ion-nav-buttons>
+        <ion-content>
+            <textarea ng-model="vm.sig" name="sig" class="sig-textarea"> </textarea>
+
+            <div class="text-right remain-length">
+                <span ng-if="vm.remainLength>=0">剩余 {{vm.remainLength}} 字</span>
+                <span ng-if="vm.remainLength<0" class="error">已超过 {{-vm.remainLength}} 字</span>
+            </div>
+        </ion-content>
+
+    </ion-view>
+</form>

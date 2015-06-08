@@ -1,0 +1,26 @@
+<ion-view view-title="用户">
+    <ion-content>
+        <dl class="list user-info">
+            <dt class="item item-divider">
+                用户信息
+            </dt>
+            <dd class="item avatar-update-con item-icon-right">
+                <img class="avatar-img" src="{{userInfo.avatar}}" alt=""/>
+                <i class="icon ion-plus-round bigger file-icon-con" on-tap="showAvatarActionSheet()"></i>
+            </dd>
+            <dd class="item">
+                昵称：{{userInfo.username}}
+            </dd>
+            <dd class="item">
+                性别：{{userInfo.sex|sex:0}}
+            </dd>
+        </dl>
+        <dl class="list ">
+            <a class="item item-icon-right" ng-href="#/app/user/{{userInfo.username}}/sig-edit">
+                个性签名：{{userInfo.signature}} <i class="icon ion-ios-arrow-right"></i>
+            </a>
+            <a class="item " ng-href="#/app/myconments">我的近期评论<span class="badge badge-energized">0</span></a>
+        </dl>
+
+    </ion-content>
+</ion-view>
