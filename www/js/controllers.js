@@ -66,6 +66,8 @@ angular.module('ease.controllers', [])
                     $scope.$broadcast('scroll.resize');
                     page++;
                 }, 1000)
+            },function(e){
+                console.log(e);
             });
         };
 

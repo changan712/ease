@@ -8,6 +8,7 @@ angular.module('ease.services', [])
     }])
     .factory('User', ['$resource', 'apiHost', function ($resource, apiHost) {
         return $resource(apiHost + '/api/user/:username/:method', {username: '@username', method: '@method'}, {
+
             login: {
                 method: 'POST',
                 url: apiHost + '/api/user/login'

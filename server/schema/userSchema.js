@@ -25,8 +25,6 @@ UserSchema.statics = {
             .limit(options.limit || 20)
             .sort({'time': -1})
             .exec(cb);
-
-
     },
 
     updateByUserName: function (username, info, cb) {
