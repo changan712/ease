@@ -54,8 +54,21 @@ angular.module('ease.controllers', [])
 
     .controller('NewsCtrl', ['$scope', '$timeout', 'News', function ($scope, $timeout, News) {
         $scope.newslist = [];
-        // $scope.newslist = News.query();
+        //
         var page = 0;
+        $scope.doRefresh = function () {
+            page = 0;
+
+            News.query({skip: 0}, function (newsArray) {
+                $timeout(function () {
+                    $scope.newslist = newsArray;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                    $scope.$broadcast('scroll.resize');
+                    page++;
+                }, 1000)
+            });
+        };
+
         $scope.loadMore = function () {
             News.query({skip: page * 20}, function (newsArray) {
                 $timeout(function () {
@@ -75,27 +88,53 @@ angular.module('ease.controllers', [])
         $scope.news = News.get({id: $state.params.id})
     }])
 
-    .controller('UserCtrl', function ($scope, FileUploader, $ionicActionSheet, User, UserInfo) {
+    .controller('UserCtrl', function ($rootScope, $scope, FileUploader, $ionicActionSheet, Tips, User, apiHost, UserInfo) {
+        var vm = $scope.vm = {};
+        var uploader = $scope.uploader = new FileUploader({
+            url: apiHost + '/api/user/' + $rootScope.userInfo.username + '/avatar-edit'
+
+        });
+        uploader.onErrorItem = function (fileItem, response, status, headers) {
+            Tips.show(response.msg);
+            vm.avatar = '';
+
+        };
+
+        uploader.onSuccessItem = function (i, data) {
+            UserInfo.set({avatar: data.avatar});
+            Tips.show('修改成功');
+
+        };
+
+        //
+        $scope.readerError = function () {
+
+            Tips.show('文件格式错误');
+            vm.avatar = '';
+        };
+
+
+        $scope.$watch('vm.avatar', function (n, o) {
+            if (n)
+                $scope.showAvatarActionSheet();
+        });
 
         $scope.showAvatarActionSheet = function () {
             $ionicActionSheet.show({
                 buttons: [
-                    {text: '拍照'},
-                    {text: '<div>选择一张照片</div>'}
+                    {text: '确定'}
                 ],
 
-                titleText: '请选择图片来源',
+                titleText: '确认选中图片',
                 cancelText: '取消',
                 cancel: function () {
-                    // add cancel code..
+                    vm.avatar = '';
                 },
                 buttonClicked: function (index) {
                     switch (index) {
                         case 0:
+                            uploader.uploadAll();
                             return true;
-                            break;
-                        case 1:
-                            alert(2);
                             break;
                     }
 

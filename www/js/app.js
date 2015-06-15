@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('ease', ['ngResource', 'angular-md5','angular-underscore','ionic', 'angularFileUpload','ease.controllers', 'ease.services', 'ease.filters'])
+angular.module('ease', ['ngResource', 'angular-md5','angular-underscore','ionic', 'angularFileUpload','ease.controllers', 'ease.services', 'ease.filters','ease.directives'])
 
     .run(function ($rootScope,$ionicPlatform,$stateParams) {
 

@@ -1,4 +1,8 @@
 var User = require('../model/userModel');
+var multipart = require('connect-multiparty')();
+var fs = require('fs.extra');
+var im = require('imagemagick');
+
 
 module.exports = function (app) {
     // console.log(apiConfig.api_url_newslist);
@@ -19,7 +23,7 @@ module.exports = function (app) {
                     data.password = '';
                     res.send(data)
                 } else {
-                    res.status(401).send('用户名或密码错误');
+                    res.status(300).send('用户名或密码错误');
                 }
 
 
@@ -48,18 +52,47 @@ module.exports = function (app) {
             })
         });
 
-        app.post('/:username/avatar-edit', function (req, res) {
-            User.updateByUserName(req.params.username, {avatar: req.body.avatar}, function (err, data) {
-                if (err) {
-                    console.log(err);
-                    return false;
-                }
-                res.status(200).send(data)
-            })
-        })
+        app.post('/:username/avatar-edit', multipart, function (req, res) {
+            var file = req.files.file;
+
+            if (file.headers['content-type'] != 'image/jpeg' && file.headers['content-type'] != 'image/jpg' && file.headers['content-type'] != 'image/gif' && file.headers['content-type'] != 'image/png') {
+                res.status(300).json({msg: '请上传正确的图片格式'});
+                return;
+            }
+            if (file.size > (1024 * 1024 * 10)) {
+                res.status(300).json({msg: '图片太大，请选择小于10m的图片'});
+                return;
+            }
+
+            var tmp_path = file.path;
+            var nName = (new Date()).getTime() + file.name;
+            var target_path = './www/upload/' + nName;
 
 
+            fs.move(tmp_path, target_path, function (err) {
+                if (err) console.log(err);
+
+                User.updateByUserName(req.params.username, {avatar: '/upload/' + nName}, function (err, data) {
+                    if (err) {
+                        console.log(err);
+                        return false;
+                    }
+                    res.status(200).send(data)
+                })
+
+            });
+
+            /*   im.resize({
+             srcData: fs.readFileSync(tmp_path, 'binary'),
+             width: 100,
+             height: 100
+             }, function (err, stdout, stderr) {
+
+             if (err) {
+             console.log(err);
+             }
+            */
+
+        });
     });
-
-
 };

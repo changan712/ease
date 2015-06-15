@@ -1,9 +1,24 @@
 <ion-view view-title="新闻">
-    <ion-content >
-        <ion-list>
-            <a class="item" ng-repeat="list in newslist" href="#/app/news/{{list.id}}">{{list.title}}</a>
+    <ion-content>
+        <ion-refresher
+                spinner="spiral"
+                on-pulling="doRefresh()">
+        </ion-refresher>
+        <ion-list class="news-list">
+            <a class="item" ng-repeat="list in newslist" href="#/app/news/{{list.id}}">
+                {{list.title}}
+                <div class="bt gray small">
+                    <div class="pull-right bt-r">
+                        <span class="viewd"><i class="ion-eye icon"></i> {{list.viewed}}</span>
+                        <span class="liked"><i class="ion-heart icon small"></i> {{list.liked}}</span>
+                        <span class="time">{{list.time|date:'MM-dd '}}</span>
+                    </div>
+                    <div class="intro">{{list.intro}}</div>
+                </div>
+            </a>
         </ion-list>
-        <ion-infinite-scroll immediate-check="true"  spinner="spiral" ng-if="!noMoreItemsAvailable"  on-infinite="loadMore()" distance="1%">
+        <ion-infinite-scroll immediate-check="true" spinner="spiral" ng-if="!noMoreItemsAvailable"
+                             on-infinite="loadMore()" distance="5%">
 
         </ion-infinite-scroll>
     </ion-content>

@@ -7,12 +7,22 @@ var NewsSchema = new mongoose.Schema({
     time: Date,
     updateTime: Date,
     keywords: Array,
-    liked: Number,
-    commented: {
-        type:Number,
-        default:0
+    liked: {
+        type: Number,
+        default: 0
     },
-    viewed:Number
+    intro: {
+        type: String,
+        default: '暂无描述'
+    },
+    commented: {
+        type: Number,
+        default: 0
+    },
+    viewed: {
+        type: Number,
+        default: 0
+    }
 });
 
 NewsSchema.statics = {
@@ -25,11 +35,17 @@ NewsSchema.statics = {
             .exec(cb);
     },
     findById: function (id, cb) {
-        return this
-            .findOne({id: id})
-            .exec(cb);
+        var _this = this;
+        this
+            .update({id: id}, {$inc: {viewed: 1}})
+            .exec(function () {
+                _this
+                    .findOne({id: id})
+                    .exec(cb);
+            });
 
     }
+
 };
 
 module.exports = NewsSchema;

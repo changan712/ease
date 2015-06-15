@@ -9,13 +9,16 @@ module.exports = function (app) {
             News.fetch(req.query,function (err, data) {
                 if (err) {
                     console.log(err);
-                    return false;
+
                 }
                 res.send(data)
             });
         });
         app.get('/:id',function(req, res){
-            News.findById(req.params.id).then(function(data){
+            News.findById(req.params.id,function(err,data){
+                if (err) {
+                    console.log(err);
+                }
                 res.send(data);
             })
         });

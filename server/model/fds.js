@@ -28,7 +28,10 @@ var fds = {
                         var _id = obj.id;
                         var _obj = obj;
                         getNews(link, function ($) {
-                            _obj.description = $('.TRS_Editor').html();
+                            var ed = $('.TRS_Editor')
+                            _obj.description = ed.html();
+                            _obj.intro = ed.text().trim().slice(0,30);
+
                             _obj.keywords = fds.getKeywords($);
 
                             News.findById(_id, function (err, data) {
@@ -50,10 +53,10 @@ var fds = {
         );
     },
     getKeywords: function ($) {
-   var metas = $('html meta');
+        var metas = $('html meta');
         var keywords = [];
         for (var i = 0; i < metas.length; i++) {
-            if (metas.eq(i).attr('name')&&metas.eq(i).attr('name').toLowerCase() == 'keywords') {
+            if (metas.eq(i).attr('name') && metas.eq(i).attr('name').toLowerCase() == 'keywords') {
                 keywords = metas.eq(i).attr('content').split(';');
                 break;
             }

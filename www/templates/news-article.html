@@ -6,7 +6,7 @@
     </ion-nav-buttons>
     <ion-content class="padding">
 
-        <div class="article">
+        <div class="article news-article">
             <h1 class="article-title"><ion-scroll scrollbar-y="false" scrollbar-x="false" direction="x" >{{news.title}}</ion-scroll></h1>
             <div class="article-con" ng-bind-html="rendHtml(news.description)"></div>
             <div class="keywords" ng-if="news.keywords.length">关键字:

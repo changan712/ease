@@ -5,8 +5,10 @@
                 用户信息
             </dt>
             <dd class="item avatar-update-con item-icon-right">
-                <img class="avatar-img" src="{{userInfo.avatar}}" alt=""/>
-                <i class="icon ion-plus-round bigger file-icon-con" on-tap="showAvatarActionSheet()"></i>
+
+                    <img class="avatar-img" src="{{vm.avatar||userInfo.avatar}}" alt=""/>
+                    <input type="file" name="file" nv-file-select  uploader="uploader"  reader-error = "readerError()" fileread="vm.avatar" class="file"/>
+
             </dd>
             <dd class="item">
                 昵称：{{userInfo.username}}
