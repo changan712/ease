@@ -1,7 +1,7 @@
 angular.module('ease.services', [])
 
     .constant({
-        apiHost: 'http://localhost:8200'
+        apiHost: 'http://112.124.118.82:8200'
     })
     .factory('News', ['$resource', 'apiHost', function ($resource, apiHost) {
         return $resource(apiHost + '/api/news/:id', {id: '@id'});

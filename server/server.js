@@ -46,12 +46,10 @@ app.all('*', function (req, res, next) {
 routerNews(app);
 routerUser(app);
 
-/*
 
  app.get('/',function(req,res){
- res.sendFile(path.join(__dirname,'../app/index.html'));
+ res.sendFile(path.join(__dirname,'../www/index.html'));
  });
- */
 
 //fds.insetNewsList();
 fds.run();
