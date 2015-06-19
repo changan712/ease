@@ -3,32 +3,44 @@ var mongoose = require('mongoose');
 var CommentSchema = new mongoose.Schema({
     userName: String,
     newsId: String,
+    text:String,
     at: String,
     liked: {
-        type: string,
+        type: Number,
+        default: 0
+    },
+    replayed: {
+        type: Number,
         default: 0
     }
 }, {
     collection: 'comment'
 });
-NewsSchema.statics = {
-    findByUserName: function (userName,options,cb) {
+CommentSchema.statics = {
+    findByUserName: function (userName, options, cb) {
         return this
             .find({userName: userName})
-            .skip(options.skip||0)
-            .skip(options.limit|20)
+            .skip(options.skip || 0)
+            .limit(options.limit | 20)
             .exec(cb);
 
     },
-    findByNewsId: function (newsId,options,cb) {
+    findByNewsId: function (newsId, options, cb) {
         return this
             .find({newsId: newsId})
-            .skip(options.skip||0)
-            .skip(options.limit|40)
+            .skip(options.skip || 0)
+            .limit(options.limit | 40)
             .exec(cb);
 
+    },
+    findHot: function () {
+        return this
+            .find({newsId: newsId})
+            .sort({replayed: 1, liked: 1})
+            .limit(options.limit | 10)
+            .exec(cb);
     }
 };
 
-module.exports = NewsSchema;
+module.exports = CommentSchema;
 

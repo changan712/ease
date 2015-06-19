@@ -43,7 +43,6 @@ NewsSchema.statics = {
                     .findOne({id: id})
                     .exec(cb);
             });
-
     }
 
 };

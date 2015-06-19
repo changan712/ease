@@ -1,9 +1,10 @@
 <ion-view view-title="新闻">
-    <ion-content>
-        <ion-refresher
-                spinner="spiral"
-                on-pulling="doRefresh()">
-        </ion-refresher>
+    <ion-nav-buttons side="right">
+        <button class="button  button-icon icon bigger ion-ios-refresh-empty" ng-click="doRefresh()">
+
+        </button>
+    </ion-nav-buttons>
+    <ion-content delegate-handle ="news-content">
         <ion-list class="news-list">
             <a class="item" ng-repeat="list in newslist" href="#/app/news/{{list.id}}">
                 {{list.title}}

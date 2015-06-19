@@ -1,22 +1,23 @@
 angular.module('ease.services', [])
 
     .constant({
-        apiHost: 'http://112.124.118.82:8200'
+        //apiHost: 'http://112.124.118.82:8200'
+        apiHost: 'http://127.0.0.1:8200'
     })
     .factory('News', ['$resource', 'apiHost', function ($resource, apiHost) {
         return $resource(apiHost + '/api/news/:id', {id: '@id'});
     }])
     .factory('User', ['$resource', 'apiHost', function ($resource, apiHost) {
         return $resource(apiHost + '/api/user/:username/:method', {username: '@username', method: '@method'}, {
-
             login: {
                 method: 'POST',
                 url: apiHost + '/api/user/login'
             }
         });
     }])
-
-
+    .factory('Comment', ['$resource', 'apiHost', function ($resource, apiHost) {
+        return $resource(apiHost + '/api/comment/:username/:id', {username: '@username', id: '@id'})
+    }])
     .service('Tips', ['$ionicLoading', function ($ionicLoading) {
 
         return {

@@ -52,21 +52,20 @@ angular.module('ease.controllers', [])
     })
 
 
-    .controller('NewsCtrl', ['$scope', '$timeout', 'News', function ($scope, $timeout, News) {
+    .controller('NewsCtrl', ['$scope', '$timeout', '$ionicScrollDelegate', 'News', function ($scope, $timeout, $ionicScrollDelegate, News) {
         $scope.newslist = [];
         //
         var page = 0;
         $scope.doRefresh = function () {
             page = 0;
-
             News.query({skip: 0}, function (newsArray) {
-                $timeout(function () {
-                    $scope.newslist = newsArray;
-                    $scope.$broadcast('scroll.infiniteScrollComplete');
-                    $scope.$broadcast('scroll.resize');
-                    page++;
-                }, 1000)
-            },function(e){
+                $ionicScrollDelegate.$getByHandle('news-content').scrollTop();
+                $scope.newslist = newsArray;
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+                $scope.$broadcast('scroll.resize');
+                page++;
+
+            }, function (e) {
                 console.log(e);
             });
         };
@@ -82,12 +81,34 @@ angular.module('ease.controllers', [])
             });
         }
     }])
-    .controller('NewsAtCtrl', ['$scope', '$state', '$sce', 'News', function ($scope, $state, $sce, News) {
+    .controller('NewsAtCtrl', ['$rootScope', '$scope', '$state', '$sce', 'Tips', 'News', 'Comment', function ($rootScope, $scope, $state, $sce, Tips, News, Comment) {
 
+        var newsId = $state.params.id;
         $scope.rendHtml = function (html) {
             return $sce.trustAsHtml(html)
         };
-        $scope.news = News.get({id: $state.params.id})
+
+        $scope.news = News.get({id: newsId});
+
+        //发表评论
+        $scope.sendComment = function () {
+            if ($scope.comments.trim().length) {
+                Comment.save({}, {
+                    userName: $rootScope.userInfo.username,
+                    newsId: newsId,
+                    text: $scope.comments
+                }, function (data) {
+
+                    Tips.show(data.msg);
+                    $scope.comments = '';
+
+                    $scope.news.commented++;
+                },function(){
+                    Tips.show('评论失败，请稍后再试!');
+                    $scope.comments = '';
+                })
+            }
+        }
     }])
 
     .controller('UserCtrl', function ($rootScope, $scope, FileUploader, $ionicActionSheet, Tips, User, apiHost, UserInfo) {

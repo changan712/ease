@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 
 var routerNews = require('./routes/news');
 var routerUser = require('./routes/user');
+var routerComment = require('./routes/comment');
+
 var http = require('http');
 var path = require('path');
 var settings = require('./settings');
@@ -45,6 +47,7 @@ app.all('*', function (req, res, next) {
 
 routerNews(app);
 routerUser(app);
+routerComment(app);
 
 
  app.get('/',function(req,res){

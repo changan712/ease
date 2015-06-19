@@ -166,24 +166,36 @@ ion-side-menu {
 .comment-footer {
   border-top: 1px solid #ddd;
   display: flex;
+  height: auto;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
 
   .editor {
-    flex:1 1 500px;
+    flex: 1 1 500px;
+    -webkit-flex: 1 1 500px;
     background: #fff;
     border: 1px solid #ddd;
     padding: 5px 10px;
-
+    max-height: 66px;
+    overflow: auto;
+    height: auto;
+    line-height: 1.5;
+    width: 85%;
+    display: block;
+    color: #333;
 
   }
 
-  .button{
-    flex:1 1 90px;
+  .button {
+    flex: 1 1 90px;
+    -webkit-flex: 1 1 90px;
     background: #f0f0f0;
     margin: 0 0 0 10px;
 
   }
-
-
 }
 
-
+[contenteditable]:empty:before {
+  content: attr(placeholder);
+  color: lighten(@black, 80%);
+}

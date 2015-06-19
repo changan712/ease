@@ -17,6 +17,7 @@
                 {{news.time|date:'yyyy-MM-dd '}}
             </div>
             <div class="comment">
+
                 <h5>精彩评论</h5>
 
                 <div class="line"></div>
@@ -27,8 +28,7 @@
         </div>
     </ion-content>
     <ion-footer-bar class="bar-light comment-footer gray">
-        <input type="text" class="editor small " contenteditable="true" placeholder="没事写两句">
-        <button class="button">发送</button>
-
+        <div  class="editor small"  contenteditable ng-model="comments"   strip-br="true" placeholder ="没事说两句"></div>
+        <button class="button" on-tap="sendComment()">发送</button>
     </ion-footer-bar>
 </ion-view>
