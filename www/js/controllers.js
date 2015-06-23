@@ -101,14 +101,16 @@ angular.module('ease.controllers', [])
 
                     Tips.show(data.msg);
                     $scope.comments = '';
-
+                    News.updateCommented({id:newsId,method:'addCommented'});
                     $scope.news.commented++;
                 },function(){
                     Tips.show('评论失败，请稍后再试!');
                     $scope.comments = '';
                 })
             }
-        }
+        };
+
+
     }])
 
     .controller('UserCtrl', function ($rootScope, $scope, FileUploader, $ionicActionSheet, Tips, User, apiHost, UserInfo) {

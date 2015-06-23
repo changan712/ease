@@ -6,28 +6,34 @@ module.exports = function (app) {
     app.namespace('/api/comment', function () {
 
         app.post('/', function (req, res) {
-            Comment.create({
-                userName: 'ddd',
-                newsId: '5693463'
-            }, function (err, data) {
+            Comment.create(req.body, function (err, data) {
                 if (err) {
                     console.log(err);
                     return false;
                 }
 
-                res.status(200).json({msg:'评论成功！'});
+                res.status(200).json({msg: '评论成功！'});
 
             });
 
         });
         app.get('/', function (req, res) {
-            News.fetch(req.query, function (err, data) {
-                if (err) {
-                    console.log(err);
 
-                }
-                res.send(data)
-            });
+            if (req.query.newsId) {
+                Comment.findByNewsId(req.query.newsId, req.query, function (err, data) {
+                    if (err) console.log(err);
+                    res.send(data);
+                });
+
+            } else if (req.query.userName) {
+                Comment.findByUserName(req.query.userName, req.query, function (err, data) {
+                    if (err) console.log(err);
+                    res.send(data);
+                });
+            } else {
+                res.json({msg: '参数错误'})
+            }
+
         });
         app.get('/:id', function (req, res) {
             News.findById(req.params.id, function (err, data) {

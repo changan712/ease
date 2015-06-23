@@ -43,6 +43,12 @@ NewsSchema.statics = {
                     .findOne({id: id})
                     .exec(cb);
             });
+    },
+
+    addCommented: function (id, fn) {
+        return this
+            .update({id: id}, {$inc: {commented:1}})
+            .exec(fn);
     }
 
 };

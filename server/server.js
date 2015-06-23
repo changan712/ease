@@ -32,9 +32,13 @@ var app = express();
 app.set('uploadDir', './tmp');
 app.use(express.static(path.join(__dirname, '../www')));
 app.use(bodyParser.json());
-
+try{
 
 app.listen(settings.port);
+}catch(e){
+
+    console.log(e);
+}
 
 
 app.all('*', function (req, res, next) {

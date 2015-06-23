@@ -5,6 +5,7 @@ var CommentSchema = new mongoose.Schema({
     newsId: String,
     text:String,
     at: String,
+    time:Date,
     liked: {
         type: Number,
         default: 0
