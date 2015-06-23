@@ -35,14 +35,7 @@ module.exports = function (app) {
             }
 
         });
-        app.get('/:id', function (req, res) {
-            News.findById(req.params.id, function (err, data) {
-                if (err) {
-                    console.log(err);
-                }
-                res.send(data);
-            })
-        });
+
     })
 
 };

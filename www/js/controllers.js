@@ -83,7 +83,7 @@ angular.module('ease.controllers', [])
     }])
     .controller('NewsAtCtrl', ['$rootScope', '$scope', '$state', '$sce', 'Tips', 'News', 'Comment', function ($rootScope, $scope, $state, $sce, Tips, News, Comment) {
 
-        var newsId = $state.params.id;
+        var newsId = $scope.newsId = $state.params.id;
         $scope.rendHtml = function (html) {
             return $sce.trustAsHtml(html)
         };
@@ -96,14 +96,15 @@ angular.module('ease.controllers', [])
                 Comment.save({}, {
                     userName: $rootScope.userInfo.username,
                     newsId: newsId,
-                    text: $scope.comments
+                    text: $scope.comments,
+                    time: new Date()
                 }, function (data) {
 
                     Tips.show(data.msg);
                     $scope.comments = '';
-                    News.updateCommented({id:newsId,method:'addCommented'});
+                    News.updateCommented({id: newsId, method: 'addCommented'});
                     $scope.news.commented++;
-                },function(){
+                }, function () {
                     Tips.show('评论失败，请稍后再试!');
                     $scope.comments = '';
                 })
@@ -201,4 +202,12 @@ angular.module('ease.controllers', [])
             })
         }
 
-    });
+    })
+    .controller('commentCtrl', ['$scope', '$state', 'Comment', function ($scope, $state, Comment) {
+        $scope.newsId = $state.params.newsId;
+        Comment.query({newsId: $scope.newsId}, function (data) {
+            $scope.list = data;
+        })
+
+    }])
+;

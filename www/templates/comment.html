@@ -1,0 +1,11 @@
+<ion-view view-title="评论">
+    <ion-nav-buttons side="right">
+    <a ng-href="#/app/news/{{newsId}}" class="button">返回正文</a>
+        </ion-nav-buttons>
+    <ion-content>
+        <ion-list class="" >
+            <ion-item ng-repeat="li in list">{{li.text}}<span class="pull-right small gray">{{li.time|date:'yyyy-mm-dd'}}</span></ion-item>
+
+        </ion-list>
+    </ion-content>
+</ion-view>

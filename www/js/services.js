@@ -22,7 +22,7 @@ angular.module('ease.services', [])
         });
     }])
     .factory('Comment', ['$resource', 'apiHost', function ($resource, apiHost) {
-        return $resource(apiHost + '/api/comment/:username/:id', {username: '@username', id: '@id'})
+        return $resource(apiHost + '/api/comment')
     }])
     .service('Tips', ['$ionicLoading', function ($ionicLoading) {
 
