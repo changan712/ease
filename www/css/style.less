@@ -195,6 +195,28 @@ ion-side-menu {
   }
 }
 
+.comment-list {
+  > li {
+    padding: 8px 10px;
+    border-bottom: 1px dotted #ddd;
+
+    position: relative;
+    margin: 5px 0;
+
+    .tp{
+      margin: 0 0 10px;
+    }
+
+    .ft{
+      margin: 10px  0  0;
+    }
+    &:last-child{
+      border: none;
+    }
+  }
+
+}
+
 [contenteditable]:empty:before {
   content: attr(placeholder);
   color: lighten(@black, 80%);

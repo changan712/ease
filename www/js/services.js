@@ -2,7 +2,7 @@ angular.module('ease.services', [])
 
     .constant({
         //apiHost: 'http://112.124.118.82:8200'
-        apiHost: 'http://127.0.0.1:8300'
+        apiHost: 'http://127.0.0.1:8200'
     })
     .factory('News', ['$resource', 'apiHost', function ($resource, apiHost) {
         return $resource(apiHost + '/api/news/:id/:method', {id: '@id',method:'@method'},
@@ -30,7 +30,7 @@ angular.module('ease.services', [])
             show: function (html) {
                 $ionicLoading.show({
                     template: html,
-                    duration: 2000,
+                    duration: 1000,
                     noBackdrop: true
                 })
             },

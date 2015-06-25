@@ -1,11 +1,18 @@
 <ion-view view-title="评论">
     <ion-nav-buttons side="right">
-    <a ng-href="#/app/news/{{newsId}}" class="button">返回正文</a>
-        </ion-nav-buttons>
+        <a ng-href="#/app/news/{{newsId}}" class="button">返回正文</a>
+    </ion-nav-buttons>
     <ion-content>
-        <ion-list class="" >
-            <ion-item ng-repeat="li in list">{{li.text}}<span class="pull-right small gray">{{li.time|date:'yyyy-mm-dd'}}</span></ion-item>
-
-        </ion-list>
+        <ul class="comment-list padding">
+            <li ng-repeat="li in list" >
+                <div class="tp"> <span class="time small gray pull-right">{{li.time|myDate|date:'yyyy-MM-dd  '}}</span>
+                    <img  ng-src="{{li.avatar}}" class="avatar-img" alt=""/> {{li.userName}} </div>
+                <div class="con">{{li.text}}</div>
+                <div class="ft text-right small gray">
+                    <i class="icon ion-android-favorite-outline"></i> 顶 &nbsp;
+                    <i class="icon ion-chatbox-working "></i> 回复
+                </div>
+            </li>
+        </ul>
     </ion-content>
 </ion-view>

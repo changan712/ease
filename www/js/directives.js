@@ -45,13 +45,13 @@ angular.module('ease.directives', [])
 
                 // Write data to the model
                 function read() {
-                    var html = element.html();
+                    var text = element.text();
                     // When we clear the content editable the browser leaves a <br> behind
                     // If strip-br attribute is provided then we strip this out
-                    if (attrs.stripBr && html == '<br>') {
-                        html = '';
+                    if (attrs.stripBr && text == '<br>') {
+                        text = '';
                     }
-                    ngModel.$setViewValue(html);
+                    ngModel.$setViewValue(text);
                 }
             }
         };

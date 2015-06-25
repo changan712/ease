@@ -203,11 +203,35 @@ angular.module('ease.controllers', [])
         }
 
     })
-    .controller('commentCtrl', ['$scope', '$state', 'Comment', function ($scope, $state, Comment) {
+    .controller('commentCtrl', ['$scope', '$q', '$state', 'Comment', function ($scope, $q, $state, Comment) {
         $scope.newsId = $state.params.newsId;
-        Comment.query({newsId: $scope.newsId}, function (data) {
-            $scope.list = data;
+        getComment().then(function (data) {
+            $scope.list = data
+            return 'aaa';
+        }).then(function(x){
+            console.log(x);
         })
+
+        function getComment(skip) {
+            var def = $q.defer();
+            Comment.query({newsId: $scope.newsId, skip: skip || 0}).$promise.then(function (data) {
+                var arrUserName = [];
+                _.each(data, function (ar) {
+                    arrUserName.push(ar.userName)
+                });
+
+                arrUserName = _.uniq(arrUserName);
+
+                console.log(arrUserName);
+                def.resolve(data);
+
+            }, function () {
+                def.reject('获取评论失败');
+            });
+
+            return def.promise;
+        }
+
 
     }])
 ;

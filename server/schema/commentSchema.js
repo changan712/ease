@@ -3,9 +3,9 @@ var mongoose = require('mongoose');
 var CommentSchema = new mongoose.Schema({
     userName: String,
     newsId: String,
-    text:String,
+    text: String,
     at: String,
-    time:Date,
+    time: Date,
     liked: {
         type: Number,
         default: 0
@@ -21,6 +21,7 @@ CommentSchema.statics = {
     findByUserName: function (userName, options, cb) {
         return this
             .find({userName: userName})
+            .sort({time: -1})
             .skip(options.skip || 0)
             .limit(options.limit | 20)
             .exec(cb);
@@ -29,6 +30,7 @@ CommentSchema.statics = {
     findByNewsId: function (newsId, options, cb) {
         return this
             .find({newsId: newsId})
+            .sort({time: -1})
             .skip(options.skip || 0)
             .limit(options.limit | 40)
             .exec(cb);
