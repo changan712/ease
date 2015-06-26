@@ -1,28 +1,47 @@
 angular.module('ease.controllers', [])
 
-    .controller('AppCtrl', function ($rootScope, $scope, $ionicModal, $ionicPopover, $state, $timeout, User, UserInfo, md5) {
+    .controller('AppCtrl', function ($rootScope, $scope, $ionicModal, $ionicPopover, $state, $timeout, User, UserInfo, md5, Tips) {
         // Form data for the login modal
-        $scope.loginData = {};
-        $scope.loginErrorText = '';
+
         $rootScope.userInfo = UserInfo.get();
 
-        $scope.$on('userinfochange', function (e, data) {
-            $rootScope.userInfo = data;
-        });
+        $scope.showUserInfo = function () {
+            $state.go('app.user', {username: $scope.userInfo.username});
+        };
 
-        // Create the login modal that we will use later
+        //modal login
         $ionicModal.fromTemplateUrl('templates/login.html', {
             scope: $scope
         }).then(function (modal) {
-            $scope.modal = modal;
+            $scope.modalLogin = modal;
         });
 
         $scope.closeLogin = function () {
-            $scope.modal.hide();
+            $scope.modalLogin.hide();
         };
         $scope.login = function () {
-            $scope.modal.show();
+            $scope.modalLogin.show();
         };
+
+        //modal reg
+        $ionicModal.fromTemplateUrl('templates/reg.html', {
+            scope: $scope
+        }).then(function (modal) {
+            $scope.modalReg = modal;
+        });
+
+        $scope.closeReg = function () {
+            $scope.modalReg.hide();
+        };
+        $scope.reg = function () {
+            $scope.modalReg.show();
+        };
+    })
+    .controller('loginCtrl',function($rootScope, $scope, $ionicModal, $ionicPopover, $state, $timeout, User, UserInfo, md5, Tips){
+        // login
+
+        $scope.loginData = {};
+        $scope.loginErrorText = '';
         $scope.doLogin = function () {
             if ($scope.loginData.username && $scope.loginData.password) {
 
@@ -41,14 +60,40 @@ angular.module('ease.controllers', [])
             }
         };
 
+        $scope.$on('userinfochange', function (e, data) {
+            $rootScope.userInfo = data;
+        });
+
 
         $scope.loginInputChange = function () {
             $scope.loginErrorText = '';
         };
+    })
 
-        $scope.showUserInfo = function () {
-            $state.go('app.user', {username: $scope.userInfo.username});
-        }
+
+    .controller('regCtrl', function ($rootScope, $scope, $ionicModal, $ionicPopover, $state, $timeout, User, UserInfo, md5, Tips) {
+        //reg
+
+        $scope.regData = {};
+        $scope.regErrorText = '';
+
+        $scope.doReg = function () {
+            if ($scope.regData.username && $scope.regData.password && (  $scope.regData.password == $scope.regData.password2)) {
+                User.reg({},
+                    {
+                        username: $scope.regData.username,
+                        password: md5.createHash($scope.regData.password)
+                    }
+                ).$promise.then(function () {
+                        Tips.show('注册成功！')
+                    }, function (data) {
+                        console.log(data);
+                        Tips.show(data.msg)
+                    })
+            }
+
+        };
+
     })
 
 
@@ -203,14 +248,12 @@ angular.module('ease.controllers', [])
         }
 
     })
-    .controller('commentCtrl', ['$scope', '$q', '$state', 'Comment', function ($scope, $q, $state, Comment) {
+    .controller('commentCtrl', ['$scope', '$q', '$state', 'Comment', 'User', function ($scope, $q, $state, Comment, User) {
         $scope.newsId = $state.params.newsId;
         getComment().then(function (data) {
-            $scope.list = data
-            return 'aaa';
-        }).then(function(x){
-            console.log(x);
-        })
+            $scope.list = data;
+
+        });
 
         function getComment(skip) {
             var def = $q.defer();
@@ -221,6 +264,10 @@ angular.module('ease.controllers', [])
                 });
 
                 arrUserName = _.uniq(arrUserName);
+                arrUserName.push('aaa');
+                User.getUsers({arrUserName: arrUserName}).$promise.then(function (data) {
+                    console.log(data);
+                });
 
                 console.log(arrUserName);
                 def.resolve(data);
@@ -233,5 +280,4 @@ angular.module('ease.controllers', [])
         }
 
 
-    }])
-;
+    }]);

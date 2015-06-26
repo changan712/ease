@@ -3,7 +3,10 @@ var mongoose = require('mongoose');
 var UserSchema = new mongoose.Schema({
     username: String,
     password: String,
-    sex: String,
+    sex: {
+        type: String,
+        default:'male'
+    },
     avatar: {
         type: String,
         default: '/img/avatar.jpg'
@@ -27,12 +30,13 @@ UserSchema.statics = {
             .exec(cb);
     },
 
+
     updateByUserName: function (username, info, cb) {
         var _this = this;
         return this
             .update({username: username}, {"$set": info})
             .exec(function () {
-                _this.findOne({username: username},{password:0}).exec(cb);
+                _this.findOne({username: username}, {password: 0}).exec(cb);
             })
 
     },
@@ -41,7 +45,13 @@ UserSchema.statics = {
             .findOne({username: username})
             .exec(cb);
 
+    },
+    getUsers: function (userArr, cb) {
+        return this
+            .find({username: {"$in": userArr}})
+            .exec(cb)
     }
+
     /* getById: function (id, cb) {
      return this
      .findOne({_id:ObjectID(id)})

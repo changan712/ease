@@ -18,6 +18,15 @@ angular.module('ease.services', [])
             login: {
                 method: 'POST',
                 url: apiHost + '/api/user/login'
+            },
+
+            reg:{
+                method:'PUT',
+                url: apiHost + '/api/user/reg'
+            },
+            getUsers:{
+                method:'GET',
+                url:apiHost+'/api/user/getUsers'
             }
         });
     }])

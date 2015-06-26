@@ -1,0 +1,33 @@
+<ion-modal-view ng-controller="regCtrl">
+    <ion-header-bar>
+        <h1 class="title">注册</h1>
+
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeReg()"><span class="ion-android-close"></span></button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form ng-submit="doReg()">
+            <div class="list">
+                <label class="item item-input">
+                    <input type="text" ng-model="regData.username" ng-change="regInputChange()" placeholder="用户名">
+                </label>
+                <label class="item item-input">
+                    <input type="password" ng-model="regData.password" ng-change="regInputChange()"
+                           placeholder="密码">
+                </label>
+
+                <label class="item item-input">
+                    <input type="password" ng-model="regData.password2" ng-change="regInputChange()"
+                           placeholder="重复密码">
+                </label>
+
+                <label class="item">
+                    <button class="button button-block button-positive" type="submit">注册</button>
+                </label>
+
+                <div class="item error" ng-if="regErrorText">{{regErrorText}}</div>
+            </div>
+        </form>
+    </ion-content>
+</ion-modal-view>

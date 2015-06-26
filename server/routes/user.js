@@ -11,6 +11,26 @@ module.exports = function (app) {
 
         });
 
+        app.put('/reg', function (req, res) {
+            User.getByUserName(req.body.username, function (err, data) {
+                if (err) {
+                    console.log(err);
+                }
+                if (data) {
+                    res.status(300).send({msg: '该用户已存在'})
+                } else {
+                    User.create(req.body, function (err, data) {
+                        if (err) {
+                            console.log(err)
+                        }
+                        res.json(data);
+                    })
+                }
+            });
+
+
+        });
+
         app.post('/login', function (req, res) {
 
             User.getByUserName(req.body.username, function (err, data) {
@@ -30,14 +50,34 @@ module.exports = function (app) {
             })
         });
 
+        app.get('/getUsers', function (req, res) {
+            var userArr = req.query.arrUserName;
+
+            User.getUsers(userArr, function (err, data) {
+                if (err) {
+                    console.log(err);
+                }
+                if (data.length) {
+                    res.json(data)
+                } else {
+                    res.status(300).json({msg: '没有查询用户'});
+                }
+
+            });
+        });
+
         app.get('/:username', function (req, res) {
             User.getByUserName(req.params.username, function (err, data) {
                     if (err) {
                         console.log(err);
                         return false;
                     }
-                    data.password = '';
-                    res.send(data)
+                    if (data) {
+                        data.password = '';
+                        res.send(data);
+                    } else {
+                        res.status(404).json({msg: '用户不存在'});
+                    }
                 }
             )
         });
@@ -91,7 +131,7 @@ module.exports = function (app) {
              if (err) {
              console.log(err);
              }
-            */
+             */
 
         });
     });
