@@ -26,7 +26,8 @@ angular.module('ease.services', [])
             },
             getUsers:{
                 method:'GET',
-                url:apiHost+'/api/user/getUsers'
+                url:apiHost+'/api/user/getUsers',
+                isArray:true
             }
         });
     }])

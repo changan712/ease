@@ -9,6 +9,10 @@ angular.module('ease.controllers', [])
             $state.go('app.user', {username: $scope.userInfo.username});
         };
 
+        $scope.$on('userinfochange', function (e, data) {
+            $rootScope.userInfo = data;
+        });
+
         //modal login
         $ionicModal.fromTemplateUrl('templates/login.html', {
             scope: $scope
@@ -23,6 +27,14 @@ angular.module('ease.controllers', [])
             $scope.modalLogin.show();
         };
 
+        //logout
+        $scope.logout = function () {
+            UserInfo.remove();
+
+            $state.go('app.news')
+        };
+
+
         //modal reg
         $ionicModal.fromTemplateUrl('templates/reg.html', {
             scope: $scope
@@ -36,8 +48,10 @@ angular.module('ease.controllers', [])
         $scope.reg = function () {
             $scope.modalReg.show();
         };
+
+
     })
-    .controller('loginCtrl',function($rootScope, $scope, $ionicModal, $ionicPopover, $state, $timeout, User, UserInfo, md5, Tips){
+    .controller('loginCtrl', function ($rootScope, $scope, $ionicModal, $ionicPopover, $state, $timeout, User, UserInfo, md5, Tips) {
         // login
 
         $scope.loginData = {};
@@ -49,6 +63,7 @@ angular.module('ease.controllers', [])
                     username: $scope.loginData.username,
                     password: md5.createHash($scope.loginData.password)
                 }, function (res) {
+                    console.log(res);
                     UserInfo.save(res);
                     $scope.closeLogin();
                 }, function (err) {
@@ -59,10 +74,6 @@ angular.module('ease.controllers', [])
                 $scope.loginErrorText = '请输入用户名和密码';
             }
         };
-
-        $scope.$on('userinfochange', function (e, data) {
-            $rootScope.userInfo = data;
-        });
 
 
         $scope.loginInputChange = function () {
@@ -84,8 +95,12 @@ angular.module('ease.controllers', [])
                         username: $scope.regData.username,
                         password: md5.createHash($scope.regData.password)
                     }
-                ).$promise.then(function () {
-                        Tips.show('注册成功！')
+                ).$promise.then(function (res) {
+                        Tips.show('注册成功！');
+                        $scope.closeReg();
+                        UserInfo.save(res);
+                        $state.go('app.user', {username: res.username});
+
                     }, function (data) {
                         console.log(data);
                         Tips.show(data.msg)
@@ -126,38 +141,7 @@ angular.module('ease.controllers', [])
             });
         }
     }])
-    .controller('NewsAtCtrl', ['$rootScope', '$scope', '$state', '$sce', 'Tips', 'News', 'Comment', function ($rootScope, $scope, $state, $sce, Tips, News, Comment) {
 
-        var newsId = $scope.newsId = $state.params.id;
-        $scope.rendHtml = function (html) {
-            return $sce.trustAsHtml(html)
-        };
-
-        $scope.news = News.get({id: newsId});
-
-        //发表评论
-        $scope.sendComment = function () {
-            if ($scope.comments.trim().length) {
-                Comment.save({}, {
-                    userName: $rootScope.userInfo.username,
-                    newsId: newsId,
-                    text: $scope.comments,
-                    time: new Date()
-                }, function (data) {
-
-                    Tips.show(data.msg);
-                    $scope.comments = '';
-                    News.updateCommented({id: newsId, method: 'addCommented'});
-                    $scope.news.commented++;
-                }, function () {
-                    Tips.show('评论失败，请稍后再试!');
-                    $scope.comments = '';
-                })
-            }
-        };
-
-
-    }])
 
     .controller('UserCtrl', function ($rootScope, $scope, FileUploader, $ionicActionSheet, Tips, User, apiHost, UserInfo) {
         var vm = $scope.vm = {};
@@ -255,21 +239,34 @@ angular.module('ease.controllers', [])
 
         });
 
+        function getAvatarByUserName(userName, userArr) {
+
+            var userFinded = _.find(userArr, function (user) {
+                return userName == user.username
+            });
+
+            return userFinded.avatar;
+
+        }
+
         function getComment(skip) {
             var def = $q.defer();
-            Comment.query({newsId: $scope.newsId, skip: skip || 0}).$promise.then(function (data) {
+            Comment.query({newsId: $scope.$parent.newsId, skip: skip || 0}).$promise.then(function (data) {
                 var arrUserName = [];
                 _.each(data, function (ar) {
                     arrUserName.push(ar.userName)
                 });
 
                 arrUserName = _.uniq(arrUserName);
-                arrUserName.push('aaa');
-                User.getUsers({arrUserName: arrUserName}).$promise.then(function (data) {
-                    console.log(data);
+
+                User.getUsers({arrUserName: arrUserName}).$promise.then(function (userData) {
+                    _.each(data, function (comment) {
+                        comment.avatar = getAvatarByUserName(comment.userName, userData);
+                    })
+                }, function () {
+                    // console.log(data.mes)
                 });
 
-                console.log(arrUserName);
                 def.resolve(data);
 
             }, function () {
@@ -278,6 +275,33 @@ angular.module('ease.controllers', [])
 
             return def.promise;
         }
+    }])
+    .controller('NewsAtCtrl', ['$rootScope', '$scope', '$state', '$sce', '$ionicModal', 'Tips', 'News', 'Comment', function ($rootScope, $scope, $state, $sce, $ionicModal, Tips, News, Comment) {
+
+        var newsId = $scope.newsId = $state.params.id;
+        $scope.rendHtml = function (html) {
+            return $sce.trustAsHtml(html)
+        };
+
+        $scope.news = News.get({id: newsId});
+
+        //modal comments
+        $ionicModal.fromTemplateUrl('templates/comment.html', {
+            scope: $scope
+        }).then(function (modal) {
+            $scope.modalComments = modal;
+        });
 
 
-    }]);
+        $scope.showComments = function () {
+            $scope.modalComments.show();
+        };
+
+        $scope.closeComment = function () {
+            $scope.modalComments.hide();
+        }
+
+
+    }])
+
+;

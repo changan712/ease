@@ -90,7 +90,7 @@ angular.module('ease', ['ngResource', 'angular-md5','angular-underscore','ionic'
                 }
 
             })
-            .state('app.comment',{
+           /* .state('app.comment',{
                 url:"/comment?newsId&userId",
                 views: {
                     'menuContent': {
@@ -98,7 +98,7 @@ angular.module('ease', ['ngResource', 'angular-md5','angular-underscore','ionic'
                         controller: 'commentCtrl'
                     }
                 }
-            })
+            })*/
 
 
         ;

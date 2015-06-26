@@ -1,18 +1,24 @@
-<ion-view view-title="评论">
-    <ion-nav-buttons side="right">
-        <a ng-href="#/app/news/{{newsId}}" class="button">返回正文</a>
-    </ion-nav-buttons>
+
+<ion-modal-view ng-controller="commentCtrl">
+    <ion-header-bar   class="bar-dark">
+        <h1 class="title">评论</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeComment()"><span class="ion-android-close"></span></button>
+        </div>
+    </ion-header-bar>
     <ion-content>
+        <div ng-if="!list.length" class="empty">暂无评论</div>
         <ul class="comment-list padding">
             <li ng-repeat="li in list" >
-                <div class="tp"> <span class="time small gray pull-right">{{li.time|myDate|date:'yyyy-MM-dd  '}}</span>
-                    <img  ng-src="{{li.avatar}}" class="avatar-img" alt=""/> {{li.userName}} </div>
-                <div class="con">{{li.text}}</div>
-                <div class="ft text-right small gray">
-                    <i class="icon ion-android-favorite-outline"></i> 顶 &nbsp;
-                    <i class="icon ion-chatbox-working "></i> 回复
+
+                <div class="tp">
+                    <img  ng-src="{{li.avatar}}" class="avatar-img" alt=""/>
+                    <div class="r"><div class="r-r text-right pull-right small"> <i class="icon ion-android-favorite-outline"></i> 顶 &nbsp;
+                        <i class="icon ion-chatbox-working "></i> 回复</div><span class="username">{{li.userName}}</span><br> <span class="time small gray ">{{li.time|myDate|date:'yyyy-MM-dd  '}}</span></div>
                 </div>
+                <div class="con"><i class="arrow"><i></i></i>{{li.text}}</div>
+
             </li>
         </ul>
-    </ion-content>
-</ion-view>
+    </ion-content>  <comment-footer news-id="newsId"></comment-footer>
+</ion-modal-view>

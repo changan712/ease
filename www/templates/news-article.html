@@ -1,8 +1,8 @@
 <ion-view view-title="新闻内页">
     <ion-nav-buttons side="right">
-        <a class="button"  ng-href ="#/app/comment?newsId={{newsId}}">
+        <button class="button" on-tap="showComments()">
             {{news.commented}} 条评论
-        </a>
+        </button>
     </ion-nav-buttons>
     <ion-content class="padding">
         <div class="article news-article">
@@ -27,8 +27,6 @@
             </div>
         </div>
     </ion-content>
-    <ion-footer-bar class="bar-light comment-footer gray">
-        <div  class="editor small"  contenteditable ng-model="comments"   strip-br="true" placeholder ="没事说两句"></div>
-        <button class="button" on-tap="sendComment()">发送</button>
-    </ion-footer-bar>
+    <comment-footer news-id="newsId"></comment-footer>
+
 </ion-view>

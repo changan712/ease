@@ -51,13 +51,13 @@ module.exports = function (app) {
         });
 
         app.get('/getUsers', function (req, res) {
-            var userArr = req.query.arrUserName;
+            var userArr = typeof  req.query.arrUserName == "string"? [req.query.arrUserName]:req.query.arrUserName;
 
             User.getUsers(userArr, function (err, data) {
                 if (err) {
                     console.log(err);
                 }
-                if (data.length) {
+                if (data && data.length) {
                     res.json(data)
                 } else {
                     res.status(300).json({msg: '没有查询用户'});

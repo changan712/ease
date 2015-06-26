@@ -55,4 +55,43 @@ angular.module('ease.directives', [])
                 }
             }
         };
-    }]);
+    }])
+
+    .directive('commentFooter', function () {
+        return {
+            restrict: 'EA',
+            templateUrl: 'templates/comment-footer.html',
+            scope:{
+                newsId:'='
+            },
+            controller:function($rootScope,$scope,Comment,Tips,News){
+                //发表评论
+
+                var newsId = $scope.newsId;
+                $scope.sendComment = function () {
+                    if ($scope.comments.trim().length) {
+                        Comment.save({}, {
+                            userName: $rootScope.userInfo.username,
+                            newsId: newsId,
+                            text: $scope.comments,
+                            time: new Date()
+                        }, function (data) {
+
+                            Tips.show(data.msg);
+                            $scope.comments = '';
+                            News.updateCommented({id: newsId, method: 'addCommented'});
+                            $scope.$parent.news.commented++;
+                        }, function () {
+                            Tips.show('评论失败，请稍后再试!');
+                            $scope.comments = '';
+                        })
+                    }
+                };
+            },
+            link:function(scope){
+                console.log(scope.newsId)
+            }
+
+        }
+    })
+;

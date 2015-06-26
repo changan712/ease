@@ -198,23 +198,71 @@ ion-side-menu {
 .comment-list {
   > li {
     padding: 8px 10px;
-    border-bottom: 1px dotted #ddd;
-
     position: relative;
     margin: 5px 0;
 
-    .tp{
+    .tp {
       margin: 0 0 10px;
+      padding-left: 40px;
+      position: relative;
+      height: 30px;
+      .avatar-img {
+        width: 30px;
+        height: 30px;
+        .borderRadius(5px);
+        position: absolute;
+        left: 0;
+        top: 0;
+
+      }
+
+      .r {
+        line-height: 16px;
+        .username {
+          font-weight: bold;
+        }
+
+        .r-r {
+          line-height: 30px;
+          color: @gray;
+        }
+      }
     }
 
-    .ft{
-      margin: 10px  0  0;
-    }
-    &:last-child{
-      border: none;
+    .con {
+      .borderRadius(5px);
+      border: 1px solid #eee;
+      padding: 10px;
+      background: #fcfcfc;
+      position: relative;
+
+      .arrow {
+        position: absolute;;
+        left: 10px;
+        top: -5px;
+        height: 5px;
+        padding: 2px 0 0;
+        width: 10px;
+        overflow: hidden;
+
+        > i {
+          height: 10px;
+          width: 10px;
+          float: left;
+          border: 1px solid #eee;
+
+          transform: rotate(45deg);
+          background: #fcfcfc;
+        }
+      }
     }
   }
+}
 
+.empty{
+  text-align: center;
+  padding: 50px 0;
+  color: lighten(@black, 50%);
 }
 
 [contenteditable]:empty:before {

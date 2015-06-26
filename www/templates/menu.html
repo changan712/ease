@@ -15,7 +15,11 @@
 
                 <img class="avatar-img" src="{{userInfo.avatar}}" alt=""/>
                 <div class="r">
-                    <span class="username">{{userInfo.username}}</span> <span ng-if="userInfo.sex"                                                                                 ng-class="{'pink ion-female':userInfo.sex=='female','blue ion-male':userInfo.sex=='male'}"></span><br>
+                    <i  ng-if="userInfo.username " on-tap="logout()" class="ion-log-out icon bigger pull-right"></i>
+                    <span class="username">{{userInfo.username}}</span> <span ng-if="userInfo.sex"                                                                                 ng-class="{'pink ion-female':userInfo.sex=='female','blue ion-male':userInfo.sex=='male'}"></span>
+
+
+                    <br>
                     <span class="signature">{{userInfo.signature}}</span>
                 </div>
             </div>
