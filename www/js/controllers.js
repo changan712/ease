@@ -290,7 +290,13 @@ angular.module('ease.controllers', [])
             scope: $scope
         }).then(function (modal) {
             $scope.modalComments = modal;
+
         });
+
+        $scope.$on('$destroy', function() {
+            $scope.modalComments.remove();
+        });
+
 
 
         $scope.showComments = function () {
@@ -303,5 +309,31 @@ angular.module('ease.controllers', [])
 
 
     }])
+    .controller('FooterComment', ['$rootScope', '$scope',  'Tips', 'News', 'Comment', function ($rootScope, $scope, Tips, News, Comment) {
+
+        var newsId = $scope.newsId;
+        $scope.sendComment = function () {
+            if ($scope.comments.trim().length) {
+                Comment.save({}, {
+                    userName: $rootScope.userInfo.username,
+                    newsId: newsId,
+                    text: $scope.comments,
+                    time: new Date()
+                }, function (data) {
+
+                    Tips.show(data.msg);
+                    $scope.comments = '';
+                    News.updateCommented({id: newsId, method: 'addCommented'});
+                    $scope.$parent.$parent.news.commented++;
+                }, function () {
+                    Tips.show('评论失败，请稍后再试!');
+                    $scope.comments = '';
+                })
+            }
+        };
+
+
+    }])
+
 
 ;
