@@ -1,0 +1,37 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   'C:\\Users\\yuyang\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   '--userconfig=C:\\Users\\yuyang\\.cnpmrc',
+1 verbose cli   '--disturl=https://npm.taobao.org/mirrors/node',
+1 verbose cli   '--cache=C:\\Users\\yuyang\\.cnpm',
+1 verbose cli   '--registry=https://registry.npm.taobao.org',
+1 verbose cli   '--node-gyp=C:\\Users\\yuyang\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\pangyp\\bin\\node-gyp.js',
+1 verbose cli   'uninstall',
+1 verbose cli   'mongoose',
+1 verbose cli   '--save' ]
+2 info using npm@2.7.6
+3 info using node@v0.10.35
+4 verbose unbuild node_modules\mongoose
+5 info preuninstall mongoose@3.8.21
+6 info uninstall mongoose@3.8.21
+7 verbose unbuild rmStuff mongoose@3.8.21 from F:\aliyun\ease\node_modules
+8 info postuninstall mongoose@3.8.21
+9 silly gentlyRm F:\aliyun\ease\node_modules\mongoose is being purged from base F:\aliyun\ease
+10 verbose gentlyRm don't care about contents; nuking F:\aliyun\ease\node_modules\mongoose
+11 silly vacuum-fs purging F:\aliyun\ease\node_modules\mongoose
+12 verbose stack Error: EPERM, unlink 'F:\aliyun\ease\node_modules\mongoose\node_modules\mongodb\node_modules\bson\ext\win32\ia32\bson.node'
+13 verbose cwd F:\aliyun\ease
+14 error Windows_NT 6.1.7601
+15 error argv "node" "C:\\Users\\yuyang\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\npm\\bin\\npm-cli.js" "--userconfig=C:\\Users\\yuyang\\.cnpmrc" "--disturl=https://npm.taobao.org/mirrors/node" "--cache=C:\\Users\\yuyang\\.cnpm" "--registry=https://registry.npm.taobao.org" "--node-gyp=C:\\Users\\yuyang\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\pangyp\\bin\\node-gyp.js" "uninstall" "mongoose" "--save"
+16 error node v0.10.35
+17 error npm  v2.7.6
+18 error path F:\aliyun\ease\node_modules\mongoose\node_modules\mongodb\node_modules\bson\ext\win32\ia32\bson.node
+19 error code EPERM
+20 error errno 50
+21 error Error: EPERM, unlink 'F:\aliyun\ease\node_modules\mongoose\node_modules\mongodb\node_modules\bson\ext\win32\ia32\bson.node'
+21 error  { [Error: EPERM, unlink 'F:\aliyun\ease\node_modules\mongoose\node_modules\mongodb\node_modules\bson\ext\win32\ia32\bson.node']
+21 error   errno: 50,
+21 error   code: 'EPERM',
+21 error   path: 'F:\\aliyun\\ease\\node_modules\\mongoose\\node_modules\\mongodb\\node_modules\\bson\\ext\\win32\\ia32\\bson.node' }
+22 error Please try running this command again as root/Administrator.
+23 verbose exit [ 50, true ]

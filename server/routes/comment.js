@@ -17,6 +17,36 @@ module.exports = function (app) {
             });
 
         });
+
+        app.post('/addLiked', function (req, res) {
+            Comment.addLicked(req.body.commentId,req.body.user, function (err, data) {
+                if (err) {
+                    console.log(err);
+                    res.status(300).send({msg: err});
+                    return false;
+                }
+
+                res.send(data)
+
+            })
+
+        });
+
+        app.post('/removeLiked', function (req, res) {
+
+            console.log(req.body);
+            Comment.removeLicked(req.body.commentId,req.body.user, function (err, data) {
+                if (err) {
+                    console.log(err);
+                    res.status(300).send({msg: err});
+                    return false;
+                }
+
+                res.send(data)
+
+            })
+
+        });
         app.get('/', function (req, res) {
 
             if (req.query.newsId) {

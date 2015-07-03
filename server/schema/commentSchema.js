@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+var ObjectID =  require('mongodb').ObjectID;
+
 
 var CommentSchema = new mongoose.Schema({
     userName: String,
@@ -7,8 +9,8 @@ var CommentSchema = new mongoose.Schema({
     at: String,
     time: Date,
     liked: {
-        type: Number,
-        default: 0
+        type: Array,
+        default: []
     },
     replayed: {
         type: Number,
@@ -41,6 +43,16 @@ CommentSchema.statics = {
             .find({newsId: newsId})
             .sort({replayed: 1, liked: 1})
             .limit(options.limit | 10)
+            .exec(cb);
+    },
+    addLicked: function (commentId, user, cb) {
+        return this
+            .update({_id: new ObjectID(commentId)}, {"$addToSet": {liked: user}})
+            .exec(cb);
+    },
+    removeLicked: function (commentId, user, cb) {
+        return this
+            .update({_id: new ObjectID(commentId)}, {"$pull": {liked: user}})
             .exec(cb);
     }
 };

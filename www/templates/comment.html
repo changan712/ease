@@ -1,24 +1,32 @@
-
 <ion-modal-view ng-controller="commentCtrl">
-    <ion-header-bar   class="bar-dark">
+    <ion-header-bar class="bar-dark">
         <h1 class="title">评论</h1>
+
         <div class="buttons">
-            <button class="button button-clear" ng-click="closeComment()"><span class="ion-android-close"></span></button>
+            <button class="button button-clear" ng-click="closeComment()"><span class="ion-android-close"></span>
+            </button>
         </div>
     </ion-header-bar>
-    <ion-content>
+    <ion-content on-scroll="scroll();">
         <div ng-if="!list.length" class="empty">暂无评论</div>
         <ul class="comment-list padding">
-            <li ng-repeat="li in list" >
+            <li ng-repeat="li in list">
 
                 <div class="tp">
-                    <img  ng-src="{{li.avatar}}" class="avatar-img" alt=""/>
-                    <div class="r"><div class="r-r text-right pull-right small"> <i class="icon ion-android-favorite-outline"></i> 顶 &nbsp;
-                        <i class="icon ion-chatbox-working "></i> 回复</div><span class="username">{{li.userName}}</span><br> <span class="time small gray ">{{li.time|myDate|date:'yyyy-MM-dd  '}}</span></div>
+                    <img ng-src="{{li.avatar}}" class="avatar-img" alt=""/>
+
+                    <div class="r">
+                        <div class="r-r text-right pull-right small"><i on-tap="removeLiked('{{li._id}}')" class="icon ion-android-favorite-outline"></i> 顶
+                            &nbsp;
+                            <i class="icon ion-chatbox-working "></i> 回复
+                        </div>
+                        <span class="username">{{li.userName}}</span>&nbsp;&nbsp; <span class="small gray">{{$index}} 楼</span> <br> <span class="time small gray ">{{li.time|myDate|date:'yyyy-MM-dd  '}}</span>
+                    </div>
                 </div>
                 <div class="con"><i class="arrow"><i></i></i>{{li.text}}</div>
 
             </li>
         </ul>
-    </ion-content>  <comment-footer news-id="newsId"></comment-footer>
+    </ion-content>
+    <comment-footer news-id="newsId"></comment-footer>
 </ion-modal-view>

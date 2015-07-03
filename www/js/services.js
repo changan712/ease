@@ -5,11 +5,11 @@ angular.module('ease.services', [])
         apiHost: 'http://127.0.0.1:8200'
     })
     .factory('News', ['$resource', 'apiHost', function ($resource, apiHost) {
-        return $resource(apiHost + '/api/news/:id/:method', {id: '@id',method:'@method'},
+        return $resource(apiHost + '/api/news/:id/:method', {id: '@id', method: '@method'},
             {
                 updateCommented: {
                     method: 'PUT'
-            }
+                }
             }
         );
     }])
@@ -20,19 +20,19 @@ angular.module('ease.services', [])
                 url: apiHost + '/api/user/login'
             },
 
-            reg:{
-                method:'PUT',
+            reg: {
+                method: 'PUT',
                 url: apiHost + '/api/user/reg'
             },
-            getUsers:{
-                method:'GET',
-                url:apiHost+'/api/user/getUsers',
-                isArray:true
+            getUsers: {
+                method: 'GET',
+                url: apiHost + '/api/user/getUsers',
+                isArray: true
             }
         });
     }])
     .factory('Comment', ['$resource', 'apiHost', function ($resource, apiHost) {
-        return $resource(apiHost + '/api/comment')
+        return $resource(apiHost + '/api/comment/:method', {method: '@method'})
     }])
     .service('Tips', ['$ionicLoading', function ($ionicLoading) {
 

@@ -4,7 +4,6 @@ var express = require('express');
 var open = require('open');
 var bodyParser = require('body-parser');
 
-
 var routerNews = require('./routes/news');
 var routerUser = require('./routes/user');
 var routerComment = require('./routes/comment');
@@ -14,6 +13,7 @@ var path = require('path');
 var settings = require('./settings');
 
 var mongoose = require('mongoose');
+
 
 var fds = require('./model/fds');
 var db = mongoose.connection;

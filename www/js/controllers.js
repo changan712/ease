@@ -232,12 +232,35 @@ angular.module('ease.controllers', [])
         }
 
     })
-    .controller('commentCtrl', ['$scope', '$q', '$state', 'Comment', 'User', function ($scope, $q, $state, Comment, User) {
+    .controller('commentCtrl', ['$rootScope', '$scope', '$q', '$state', 'Comment', 'User', function ($rootScope, $scope, $q, $state, Comment, User) {
         $scope.newsId = $state.params.newsId;
+
         getComment().then(function (data) {
             $scope.list = data;
 
         });
+
+        $scope.$on('commentAdded', function () {
+            getComment().then(function (data) {
+                $scope.list = data;
+            });
+        });
+
+        $scope.addLiked = function (commentId) {
+            Comment.save({method: 'addLiked'}, {commentId:commentId,user: $rootScope.userInfo.username}).$promise.then(function (data) {
+
+            }, function (data) {
+                console.log(data);
+            })
+        };
+
+        $scope.removeLiked=function(commentId){
+            Comment.save({method: 'removeLiked'}, {commentId:commentId,user: $rootScope.userInfo.username}).$promise.then(function (data) {
+
+            }, function (data) {
+                console.log(data);
+            })
+        }
 
         function getAvatarByUserName(userName, userArr) {
 
@@ -283,6 +306,11 @@ angular.module('ease.controllers', [])
             return $sce.trustAsHtml(html)
         };
 
+
+        $scope.$on('commentAdded', function () {
+            $scope.news.commented++;
+        });
+
         $scope.news = News.get({id: newsId});
 
         //modal comments
@@ -290,13 +318,11 @@ angular.module('ease.controllers', [])
             scope: $scope
         }).then(function (modal) {
             $scope.modalComments = modal;
-
         });
 
-        $scope.$on('$destroy', function() {
+        $scope.$on('$destroy', function () {
             $scope.modalComments.remove();
         });
-
 
 
         $scope.showComments = function () {
@@ -309,9 +335,9 @@ angular.module('ease.controllers', [])
 
 
     }])
-    .controller('FooterComment', ['$rootScope', '$scope',  'Tips', 'News', 'Comment', function ($rootScope, $scope, Tips, News, Comment) {
+    .controller('FooterComment', ['$rootScope', '$scope', '$state', 'Tips', 'News', 'Comment', function ($rootScope, $scope, $state, Tips, News, Comment) {
 
-        var newsId = $scope.newsId;
+        var newsId = $state.params.id;
         $scope.sendComment = function () {
             if ($scope.comments.trim().length) {
                 Comment.save({}, {
@@ -324,7 +350,9 @@ angular.module('ease.controllers', [])
                     Tips.show(data.msg);
                     $scope.comments = '';
                     News.updateCommented({id: newsId, method: 'addCommented'});
-                    $scope.$parent.$parent.news.commented++;
+
+                    $rootScope.$broadcast('commentAdded');
+
                 }, function () {
                     Tips.show('评论失败，请稍后再试!');
                     $scope.comments = '';
