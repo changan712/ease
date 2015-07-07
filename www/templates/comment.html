@@ -19,13 +19,18 @@
                         <div class="r-r text-right pull-right small"><span on-tap="addLiked(li._id)"><i
                                 class="icon ion-android-favorite-outline"></i> {{li.liked}}</span> &nbsp;&nbsp;
 
-                            <span ng-show="userInfo" on-tap="reply(li)"><i class="icon ion-chatbox-working "></i> 回复</span>
+                            <span ng-show="userInfo" on-tap="reply(li)"><i
+                                    class="icon ion-chatbox-working "></i> 回复</span>
                         </div>
                         <span class="username">{{li.userName}}</span>&nbsp;&nbsp; <span
                             class="small gray">{{$index+1}} 楼</span> <br> <span class="time small gray ">{{li.time|myDate|date:'yyyy-MM-dd  '}}</span>
                     </div>
                 </div>
-                <div class="con"><i class="arrow"><i></i></i>{{li.text}}</div>
+                <div class="con">
+                    <replied></replied>
+                    <div class="comment-text">{{li.text}}</div>
+
+                </div>
 
             </li>
         </ul>

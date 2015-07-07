@@ -338,20 +338,35 @@ angular.module('ease.controllers', [])
         var newsId = $state.params.id;
         $scope.placeholder = '没事说两句';
         $scope.reply = [];
+        var repliedUser;
 
         $scope.$on('addReply', function (e, data) {
-            $scope.comments = '回复' + data.userName + ':';
+            repliedUser = data.userName;
+            $scope.comments = '回复' + repliedUser + ' ：';
             $scope.reply = data;
 
         });
+
+
         $scope.sendComment = function () {
-            if ($scope.comments.trim().length) {
+            var resultCb = (/(^回复.*\s：)(.*)/).exec($scope.comments);
+            if (resultCb) {
+                sdComment(resultCb[2], resultCb[1]);
+            } else {
+                sdComment($scope.comments);
+            }
+
+
+        };
+
+        function sdComment(text, reply) {
+            if (text.trim().length) {
                 Comment.save({}, {
                     userName: $rootScope.userInfo.username,
                     newsId: newsId,
-                    text: $scope.comments,
+                    text:text,
                     time: new Date(),
-                    reply: $scope.reply
+                    reply: reply ? $scope.reply : null
                 }, function (data) {
 
                     Tips.show('评论成功！');
@@ -365,7 +380,7 @@ angular.module('ease.controllers', [])
                     $scope.comments = '';
                 })
             }
-        };
+        }
 
 
     }]);

@@ -201,6 +201,7 @@ ion-side-menu {
     position: relative;
     margin: 5px 0;
 
+
     .tp {
       margin: 0 0 10px;
       padding-left: 40px;
@@ -229,10 +230,33 @@ ion-side-menu {
       }
     }
 
+
     .con {
-      .borderRadius(5px);
+      padding: 5px 0;
+      .rpList{
+
+        border:1px dotted #ddd;
+        margin-bottom: 5px;
+
+        &:empty{
+          display: none;
+        }
+
+        >li{
+          background: #fcfcfc;
+          border-bottom: 1px dotted #ddd;
+          padding: 5px 10px;
+          &:last-child{
+            border-bottom: none;
+          }
+        }
+
+      }
+
+
+ /*     .borderRadius(5px);
       border: 1px solid #eee;
-      padding: 10px;
+
       background: #fcfcfc;
       position: relative;
 
@@ -254,10 +278,13 @@ ion-side-menu {
           transform: rotate(45deg);
           background: #fcfcfc;
         }
-      }
+      }*/
     }
   }
 }
+
+
+
 
 .empty{
   text-align: center;
@@ -269,3 +296,4 @@ ion-side-menu {
   content: attr(placeholder);
   color: lighten(@black, 80%);
 }
+

@@ -67,5 +67,28 @@ angular.module('ease.directives', [])
             }
 
         }
-    });
+    })
+    .directive('replied', function () {
+
+        return {
+            restrict: 'EA',
+            scope: {},
+            replace: true,
+            template: '<ul class="rpList small gray"><li ng-repeat="rp in rpLists" class="replied-li"><div class="rp-tp ">{{rp.userName}}</div>{{rp.text}}</li></ul>',
+            link: function (scope, element, attrs) {
+                scope.rpLists = [];
+                getReplyList(scope.$parent.li);
+                function getReplyList(li) {
+                    var rp = li.reply;
+                    if (rp) {
+                        scope.rpLists.push(rp);
+                        getReplyList(rp)
+                    }
+                }
+            }
+        };
+
+
+    })
+;
 
