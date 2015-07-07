@@ -36,6 +36,7 @@ module.exports = function (app) {
             User.getByUserName(req.body.username, function (err, data) {
                 if (err) {
                     console.log(err);
+                    res.status(300).send('系统错误！');
                     return false;
                 }
 
@@ -51,11 +52,12 @@ module.exports = function (app) {
         });
 
         app.get('/getUsers', function (req, res) {
-            var userArr = typeof  req.query.arrUserName == "string"? [req.query.arrUserName]:req.query.arrUserName;
+            var userArr = typeof  req.query.arrUserName == "string" ? [req.query.arrUserName] : req.query.arrUserName;
 
             User.getUsers(userArr, function (err, data) {
                 if (err) {
                     console.log(err);
+
                 }
                 if (data && data.length) {
                     res.json(data)

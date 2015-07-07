@@ -340,7 +340,7 @@ angular.module('ease.controllers', [])
         $scope.reply = [];
 
         $scope.$on('addReply', function (e, data) {
-            $scope.placeholder = '回复' + data.userName + ':';
+            $scope.comments = '回复' + data.userName + ':';
             $scope.reply = data;
 
         });
@@ -368,7 +368,4 @@ angular.module('ease.controllers', [])
         };
 
 
-    }])
-
-
-;
+    }]);
