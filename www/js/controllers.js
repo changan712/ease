@@ -232,7 +232,7 @@ angular.module('ease.controllers', [])
         }
 
     })
-    .controller('commentCtrl', ['$rootScope', '$scope', '$q', '$state', 'Comment', 'User', function ($rootScope, $scope, $q, $state, Comment, User) {
+    .controller('commentCtrl', ['$rootScope', '$scope', '$q', '$state', 'Comment', 'User', 'Tips', function ($rootScope, $scope, $q, $state, Comment, User, Tips) {
         $scope.newsId = $state.params.newsId;
 
         getComment().then(function (data) {
@@ -247,20 +247,18 @@ angular.module('ease.controllers', [])
         });
 
         $scope.addLiked = function (commentId) {
-            Comment.save({method: 'addLiked'}, {commentId:commentId,user: $rootScope.userInfo.username}).$promise.then(function (data) {
-
+            Comment.save({method: 'addLiked'}, {commentId: commentId}).$promise.then(function (data) {
+                Tips.show(data.msg);
+                _.where($scope.list, {_id: commentId})[0].liked++;
             }, function (data) {
-                console.log(data);
+                Tips.show(data.msg);
             })
         };
 
-        $scope.removeLiked=function(commentId){
-            Comment.save({method: 'removeLiked'}, {commentId:commentId,user: $rootScope.userInfo.username}).$promise.then(function (data) {
+        $scope.reply = function (li) {
+            $rootScope.$broadcast('addReply', li);
+        };
 
-            }, function (data) {
-                console.log(data);
-            })
-        }
 
         function getAvatarByUserName(userName, userArr) {
 
@@ -338,16 +336,25 @@ angular.module('ease.controllers', [])
     .controller('FooterComment', ['$rootScope', '$scope', '$state', 'Tips', 'News', 'Comment', function ($rootScope, $scope, $state, Tips, News, Comment) {
 
         var newsId = $state.params.id;
+        $scope.placeholder = '没事说两句';
+        $scope.reply = [];
+
+        $scope.$on('addReply', function (e, data) {
+            $scope.placeholder = '回复' + data.userName + ':';
+            $scope.reply = data;
+
+        });
         $scope.sendComment = function () {
             if ($scope.comments.trim().length) {
                 Comment.save({}, {
                     userName: $rootScope.userInfo.username,
                     newsId: newsId,
                     text: $scope.comments,
-                    time: new Date()
+                    time: new Date(),
+                    reply: $scope.reply
                 }, function (data) {
 
-                    Tips.show(data.msg);
+                    Tips.show('评论成功！');
                     $scope.comments = '';
                     News.updateCommented({id: newsId, method: 'addCommented'});
 

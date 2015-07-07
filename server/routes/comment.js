@@ -12,41 +12,25 @@ module.exports = function (app) {
                     return false;
                 }
 
-                res.status(200).json({msg: '评论成功！'});
+                res.status(200).json(data);
 
             });
 
         });
 
         app.post('/addLiked', function (req, res) {
-            Comment.addLicked(req.body.commentId,req.body.user, function (err, data) {
+            Comment.addLicked(req.body.commentId ,function (err, data) {
                 if (err) {
                     console.log(err);
                     res.status(300).send({msg: err});
                     return false;
                 }
-
-                res.send(data)
-
-            })
-
-        });
-
-        app.post('/removeLiked', function (req, res) {
-
-            console.log(req.body);
-            Comment.removeLicked(req.body.commentId,req.body.user, function (err, data) {
-                if (err) {
-                    console.log(err);
-                    res.status(300).send({msg: err});
-                    return false;
-                }
-
-                res.send(data)
+                res.send({msg:'支持成功！'})
 
             })
 
         });
+
         app.get('/', function (req, res) {
 
             if (req.query.newsId) {

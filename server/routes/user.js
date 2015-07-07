@@ -14,7 +14,7 @@ module.exports = function (app) {
         app.put('/reg', function (req, res) {
             User.getByUserName(req.body.username, function (err, data) {
                 if (err) {
-                    console.log(err);
+                    console.log(err)
                 }
                 if (data) {
                     res.status(300).send({msg: '该用户已存在'})

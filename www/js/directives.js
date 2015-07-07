@@ -4,6 +4,7 @@ angular.module('ease.directives', [])
             scope: {
                 fileread: "=",
                 readerError: "&"
+
             },
             link: function (scope, element, attributes) {
                 element.bind("change", function (changeEvent) {
@@ -61,14 +62,10 @@ angular.module('ease.directives', [])
         return {
             restrict: 'EA',
             templateUrl: 'templates/comment-footer.html',
-            scope:{
-                newsId:'='
-            },
-
-            link:function(scope){
-                console.log(scope.newsId)
+            scope: {
+                newsId: '='
             }
 
         }
-    })
-;
+    });
+
