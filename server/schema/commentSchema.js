@@ -34,7 +34,7 @@ CommentSchema.statics = {
             .find({newsId: newsId})
             .sort({time: -1})
             .skip(options.skip || 0)
-            .limit(options.limit | 40)
+            .limit(options.limit | 20)
             .exec(cb);
 
     },

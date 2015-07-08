@@ -235,6 +235,8 @@ angular.module('ease.controllers', [])
     .controller('commentCtrl', ['$rootScope', '$scope', '$q', '$state', 'Comment', 'User', 'Tips', function ($rootScope, $scope, $q, $state, Comment, User, Tips) {
         $scope.newsId = $state.params.newsId;
 
+        $scope.page = 0;
+
         getComment().then(function (data) {
             $scope.list = data;
 
@@ -257,6 +259,25 @@ angular.module('ease.controllers', [])
 
         $scope.reply = function (li) {
             $rootScope.$broadcast('addReply', li);
+        };
+
+        //刷新
+        $scope.doRefresh = function () {
+            $scope.page = 0;
+            getComment().then(function (data) {
+                $scope.list = data;
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+                $scope.$broadcast('scroll.resize');
+            });
+        };
+        //加载更多
+        $scope.loadMore = function () {
+            $scope.page++;
+            getComment($scope.page * 20).then(function (data) {
+                $scope.list = $scope.list.concat(data);
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+                $scope.$broadcast('scroll.resize');
+            });
         };
 
 
@@ -364,7 +385,7 @@ angular.module('ease.controllers', [])
                 Comment.save({}, {
                     userName: $rootScope.userInfo.username,
                     newsId: newsId,
-                    text:text,
+                    text: text,
                     time: new Date(),
                     reply: reply ? $scope.reply : null
                 }, function (data) {

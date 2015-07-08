@@ -34,6 +34,10 @@
 
             </li>
         </ul>
+        <ion-infinite-scroll immediate-check="false" spinner="spiral" ng-if="!noMoreItemsAvailable"
+                             on-infinite="loadMore()" distance="5%">
+
+        </ion-infinite-scroll>
     </ion-content>
     <comment-footer news-id="newsId"></comment-footer>
 </ion-modal-view>
