@@ -376,8 +376,6 @@ angular.module('ease.controllers', [])
             } else {
                 sdComment($scope.comments);
             }
-
-
         };
 
         function sdComment(text, reply) {
