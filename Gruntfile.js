@@ -1,18 +1,9 @@
-// Generated on 2015-05-04 using
-// generator-webapp 0.5.1
+
 'use strict';
-
-// # Globbing
-// for performance reasons we're only matching one level down:
-// 'test/spec/{,*/}*.js'
-// If you want to recursively match all subfolders, use:
-// 'test/spec/**/*.js'
-
 module.exports = function (grunt) {
 
     // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
-
     // Load grunt tasks automatically
     require('load-grunt-tasks')(grunt);
 
@@ -22,48 +13,101 @@ module.exports = function (grunt) {
         dist: 'dist'
     };
 
-    // Define the configuration for all the tasks
+
     grunt.initConfig({
 
-        // Project settings
         config: config,
-        connect: {
-            options: {
-                port: 9000,
-                // change this to '0.0.0.0' to access the server from outside
-                hostname: 'localhost',
-                base: '.'
-            },
-            livereload: {
+        watch: {
+            js: {
+                files: ['www/js/**', 'server/**/*.js', 'server/*.js'],
+                //tasks: ['jshint'],
                 options: {
-                    middleware: function (connect, options) {
-                        return [
-                            require('connect-livereload')({
-                                port: 35737
-                            }),
-                            // Serve static files.
-                            connect.static(options.base),
-                            // Make empty directories browsable.
-                            connect.directory(options.base)
-                        ];
-                    }
+                    livereload: true
+                }
+            },
+            uglify: {
+                files: ['public/**/*.js'],
+                tasks: ['jshint'],
+                options: {
+                    livereload: true
+                }
+            },
+            styles: {
+                files: ['public/**/*.less'],
+                tasks: ['less'],
+                options: {
+                    nospawn: true
                 }
             }
         },
-        watch: {
-            allfiles: {
-                files: ['*.html', 'css/**', 'js/**'],
-                tasks: ['less:development', 'cssmin'],
+
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc',
+                ignores: ['public/libs/**/*.js']
+            },
+            all: ['public/js/*.js', 'test/**/*.js', 'app/**/*.js']
+        },
+
+        less: {
+            development: {
                 options: {
-                    livereload: 35737
+                    compress: true,
+                    yuicompress: true,
+                    optimization: 2
+                },
+                files: {
+                    'public/build/index.css': 'public/less/index.less'
                 }
             }
-        }
+        },
 
-    });
+        uglify: {
+            development: {
+                files: {
+                    'public/build/admin.min.js': 'public/js/admin.js',
+                    'public/build/detail.min.js': [
+                        'public/js/detail.js'
+                    ]
+                }
+            }
+        },
+
+        nodemon: {
+            dev: {
+                options: {
+                    file: 'app.js',
+                    args: [],
+                    ignoredFiles: ['README.md', 'node_modules/**', '.DS_Store'],
+                    watchedExtensions: ['js'],
+                    watchedFolders: ['./'],
+                    debug: true,
+                    delayTime: 1,
+                    env: {
+                        PORT: 3000
+                    },
+                    cwd: __dirname
+                }
+            }
+        },
+
+        mochaTest: {
+            options: {
+                reporter: 'spec'
+            },
+            src: ['test/**/*.js']
+        },
+
+        concurrent: {
+            tasks: ['nodemon', 'watch', 'less', 'uglify', 'jshint'],
+            options: {
+                logConcurrentOutput: true
+            }
+        }
+    })
 
 
     grunt.registerTask('default', function () {
-        grunt.task.run([ 'connect', 'watch']);
+        grunt.task.run([ 'watch']);
     });
 };
