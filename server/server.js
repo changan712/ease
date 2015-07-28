@@ -36,7 +36,12 @@ app.use(bodyParser.json());
 app.listen(settings.port);
 console.log('listening '+settings.port);
 
+if ('development' === app.get('env')) {
+    app.set('showStackError', true)
 
+    app.locals.pretty = true
+    mongoose.set('debug', true)
+}
 
 app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
